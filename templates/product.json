@@ -31,7 +31,7 @@
         "text_CmhREB": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}",
+            "text": "{{ product.metafields.custom.product_rating | metafield_tag }} out of 5.0",
             "text_style": "body"
           }
         },
@@ -60,12 +60,6 @@
           "type": "quantity_selector",
           "settings": {}
         },
-        "monogram_block": {
-          "type": "monogram",
-          "settings": {
-            "button_text": "Add Monogram"
-          }
-        },
         "subscription_AbipnR": {
           "type": "subscription",
           "settings": {
@@ -91,6 +85,12 @@
           "settings": {
             "show_dynamic_checkout": true,
             "show_gift_card_recipient": true
+          }
+        },
+        "monogram_block": {
+          "type": "monogram",
+          "settings": {
+            "button_text": "Add Monogram"
           }
         }
       },
