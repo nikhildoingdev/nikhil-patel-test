@@ -1,0 +1,2 @@
+[[31merror[39m] No parser could be inferred for file "C:\Users\np995\Documents\EcomExperts\Clients\Base\sections\multi-column-layout.liquid".
+Prettier checked 1 files. Check TestResults/Prettier.txt for details.

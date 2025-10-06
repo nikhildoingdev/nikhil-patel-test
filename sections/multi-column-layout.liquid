@@ -1,0 +1,165 @@
+<!-- multi-column-layout.liquid -->
+<div class="multi-column-layout">
+  <div class="container">
+    <div class="columns">
+      {% for block in section.blocks %}
+        <div class="column">
+          {% if block.settings.heading_text != blank %}
+            <h2 class="column-heading">{{ block.settings.heading_text }}</h2>
+          {% endif %}
+          {% if block.settings.paragraph_text != blank %}
+            <p class="column-paragraph">{{ block.settings.paragraph_text }}</p>
+          {% endif %}
+          {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+            <a href="{{ block.settings.button_link }}" class="column-button">
+              {{ block.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .multi-column-layout .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .multi-column-layout .columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+
+  .multi-column-layout .column {
+    flex: 1 1 calc(33.333% - 30px); /* 3 columns with gap */
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+  }
+
+  .multi-column-layout .column:hover {
+    transform: translateY(-5px);
+  }
+
+  .multi-column-layout .column-heading {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .multi-column-layout .column-paragraph {
+    font-size: 1em;
+    margin-bottom: 20px;
+    color: #666;
+  }
+
+  .multi-column-layout .column-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .multi-column-layout .column-button:hover {
+    background-color: #444;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .multi-column-layout .column {
+      flex: 1 1 calc(50% - 30px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .multi-column-layout .column {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Multi-Column Layout",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "content_block",
+      "name": "Content Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading_text",
+          "label": "Heading Text",
+          "default": "Your Heading Here"
+        },
+        {
+          "type": "text",
+          "id": "paragraph_text",
+          "label": "Paragraph Text",
+          "default": "This is a sample paragraph of text for your content block."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Click Here"
+        },
+        {
+          "type": "text",
+          "id": "button_link",
+          "label": "Button Link",
+          "default": "https://example.com"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multi-Column Layout",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "content_block",
+          "settings": {
+            "heading_text": "Welcome to Our Store",
+            "paragraph_text": "Explore our latest collection of handpicked items.",
+            "button_text": "Shop Now",
+            "button_link": "https://yourstore.com/collections/new"
+          }
+        },
+        {
+          "type": "content_block",
+          "settings": {
+            "heading_text": "Exclusive Deals",
+            "paragraph_text": "Don't miss out on our limited-time offers.",
+            "button_text": "View Offers",
+            "button_link": "https://yourstore.com/pages/deals"
+          }
+        },
+        {
+          "type": "content_block",
+          "settings": {
+            "heading_text": "About Us",
+            "paragraph_text": "Learn more about our journey and what we stand for.",
+            "button_text": "Read More",
+            "button_link": "https://yourstore.com/pages/about"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

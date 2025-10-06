@@ -1,0 +1,22 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+ESLINT_CONFIG_PATH="$HOME/Documents/EcomExperts/LintingRules/pipeline-rules/.eslintrc.js"
+PRETTIER_CONFIG_PATH="$HOME/Documents/EcomExperts/LintingRules/pipeline-rules/.prettierrc.json"
+THEME_CHECK_CONFIG_PATH="$HOME/Documents/EcomExperts/LintingRules/pipeline-rules/.theme-check.yml"
+OUTPUT_FOLDER="TestResults"
+STAGED_FILES=$(git diff --name-only --cached)
+echo "Running ESLint On Staged Files Only With No Autofix..."
+echo "Using ESLint config at: ${ESLINT_CONFIG_PATH}"
+echo "${STAGED_FILES}" | grep "\\.js$" | xargs -I {} npx eslint --quiet --config "${ESLINT_CONFIG_PATH}" --ignore-path .gitignore {} > "TestResults/EsLint.txt" 2>&1 || echo "ESLint ran with errors. Check TestResults/EsLint.txt for details."
+echo "Running Prettier On Staged Files Only With No Autofix..."
+echo "Using Prettier config at: ${PRETTIER_CONFIG_PATH}"
+for file in $STAGED_FILES; do [[ $file == *.liquid ]] && npx prettier --config "${PRETTIER_CONFIG_PATH}" "$file"; done > "TestResults/Prettier.txt" 2>&1 || echo "Prettier ran with errors. Check TestResults/Prettier.txt for details."
+echo "Running Theme Check On Entire Repo With No Autofix..."
+echo "Using Theme Check config at: ${THEME_CHECK_CONFIG_PATH}"
+shopify theme check --config="${THEME_CHECK_CONFIG_PATH}" > "TestResults/ThemeCheck.txt" 2>&1 || (echo "Theme check ran with offenses or errors. Check TestResults/ThemeCheck.txt for details.")
+ESLINT_FILE_COUNT=$(echo "${STAGED_FILES}" | grep "\\.js$" | wc -l)
+PRETTIER_FILE_COUNT=$(for file in $STAGED_FILES; do [[ $file == *.liquid ]] && echo "$file"; done | wc -l)
+echo "ESLint checking ${ESLINT_FILE_COUNT} files... Check TestResults/EsLint.txt for details." >> "TestResults/EsLint.txt"
+echo "Prettier checked ${PRETTIER_FILE_COUNT} files. Check TestResults/Prettier.txt for details." >> "TestResults/Prettier.txt"
+echo "Theme Check checked All files. Check TestResults/ThemeCheck.txt for details." >> "TestResults/ThemeCheck.txt"
+git add .

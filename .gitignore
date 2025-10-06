@@ -3,4 +3,8 @@ node_modules/
 .vscode
 package-lock.json
 .shopify
-.early.coverage
+.early.coverage.husky/
+package.json
+package-lock.json
+node_modules/
+.gitignore

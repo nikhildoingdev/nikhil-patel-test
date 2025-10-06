@@ -1,0 +1,15 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+# Check if the branch name matches the required pattern or is "Develop" or "Staging"
+if [[ ! $BRANCH_NAME =~ ^(([0-9]{1,3}(\.[0-9]{1,3}){0,2}))\/(Project|Task|Bug|Hotfix|Test)-[A-Z][a-zA-Z0-9]*$ ]] && [[ ! $BRANCH_NAME =~ ^(Develop|Staging)$ ]]; then
+  echo "Error: Invalid branch name. Please follow the pattern [ID/Type-Name] or use 'Develop' or 'Staging'."
+  exit 1
+fi
+# Check if the commit message follows the required format
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+if [[ ! $COMMIT_MSG =~ ^\[(BUILD|CI|FEATURE|FIX|MERGE|REVERT|TEST)\]:\ [A-Z].{19,} ]]; then
+  echo "Error: Invalid commit message format. Please follow the format [TYPE]: [Message]."
+  exit 1
+fi
